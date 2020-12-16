@@ -128,6 +128,22 @@ dataset_base = Config({
     'label_map': None
 })
 
+
+custom_car_dataset = dataset_base.copy({
+    'name': 'Aerial Car Detection - Synthetic',
+
+    'train_images': '.dataset/Dataset_synth_rezised/train/images/',
+    'train_info':   '.dataset/Dataset_synth_rezised/train/synthetic_train_annotations.json',
+
+    'valid_images': '.dataset/Dataset_synth_rezised/val/images/',
+    'valid_info':   '.dataset/Dataset_synth_rezised/val/synthetic_val_annotations.json',
+
+    'has_gt': True,
+
+    'class_names': ('car'),
+})
+
+
 coco2014_dataset = dataset_base.copy({
     'name': 'COCO 2014',
     
