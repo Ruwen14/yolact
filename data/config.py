@@ -128,7 +128,6 @@ dataset_base = Config({
     'label_map': None
 })
 
-
 custom_car_dataset = dataset_base.copy({
     'name': 'Aerial Car Detection - Synthetic',
 
@@ -140,7 +139,8 @@ custom_car_dataset = dataset_base.copy({
 
     'has_gt': True,
 
-    'class_names': ('car'),
+    'class_names': ('car',),
+    'label_map': { 1:  1 }
 })
 
 
@@ -668,7 +668,6 @@ coco_base_config = Config({
 
 
 # ----------------------- YOLACT v1.0 CONFIGS ----------------------- #
-
 yolact_base_config = coco_base_config.copy({
     'name': 'yolact_base',
 
@@ -719,6 +718,7 @@ yolact_base_config = coco_base_config.copy({
     'use_semantic_segmentation_loss': True,
 })
 
+
 yolact_im400_config = yolact_base_config.copy({
     'name': 'yolact_im400',
 
@@ -764,6 +764,28 @@ yolact_resnet50_config = yolact_base_config.copy({
         'preapply_sqrt': False,
         'use_square_anchors': True, # This is for backward compatability with a bug
     }),
+})
+
+
+yolact_resnet50_custom_car_config = yolact_resnet50_config.copy({
+    'name': 'custom_resnet50',
+    # Dataset stuff
+    'dataset': custom_car_dataset,
+    'num_classes': len(custom_car_dataset.class_names) + 1,
+
+    'max_iter': 100000,
+
+    'augment_photometric_distort': True,
+    # Have a chance to scale down the image and pad (to emulate smaller detections)
+    'augment_expand': True,
+    # Potentialy sample a random crop from the image and put it in a random place
+    'augment_random_sample_crop': True,
+    # Mirror the image with a probability of 1/2
+    'augment_random_mirror': True,
+    # Flip the image vertically with a probability of 1/2
+    'augment_random_flip': True,
+    # With uniform probability, rotate the image [0,90,180,270] degrees
+    'augment_random_rot90': True,
 })
 
 
@@ -839,4 +861,4 @@ def set_cfg(config_name:str):
 def set_dataset(dataset_name:str):
     """ Sets the dataset of the current config. """
     cfg.dataset = eval(dataset_name)
-    
+
