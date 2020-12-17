@@ -183,15 +183,8 @@ def train():
     dataset = COCODetection(image_path=cfg.dataset.train_images,
                             info_file=cfg.dataset.train_info,
                             transform=SSDAugmentation(MEANS))
-    
-    # if args.validation_epoch > 0:
-    #     setup_eval()
-    #     val_dataset = COCODetection(image_path=cfg.dataset.valid_images,
-    #                                 info_file=cfg.dataset.valid_info,
-    #                                 transform=BaseTransform(MEANS))
 
-    #custom
-    if args.validation_epoch == 0:
+    if args.validation_epoch > 0:
         setup_eval()
         val_dataset = COCODetection(image_path=cfg.dataset.valid_images,
                                     info_file=cfg.dataset.valid_info,
@@ -391,9 +384,6 @@ def train():
                 
                 iteration += 1
 
-                #custom
-                compute_validation_map(epoch, iteration, yolact_net, val_dataset, log if args.log else None)
-
                 if iteration % args.save_interval == 0 and iteration != args.start_iter:
                     if args.keep_latest:
                         latest = SavePath.get_latest(args.save_folder, cfg.name)
@@ -531,7 +521,7 @@ def compute_validation_map(epoch, iteration, yolact_net, dataset, log:Log=None):
         
         start = time.time()
         print()
-        print("Computing validation mAP (this may take a while)...", flush=True)
+        print(f'Computing validation mAP for {args.validation_size}-(this may take a while)...', flush=True)
         val_info = eval_script.evaluate(yolact_net, dataset, train_mode=True)
         end = time.time()
 
@@ -540,28 +530,28 @@ def compute_validation_map(epoch, iteration, yolact_net, dataset, log:Log=None):
             val_iter_step = log_stuffe['iter']
             wandb.log({'Epoch Val':log_stuffe['epoch']})
             wandb.log({'Bbox mAP Avg Val':log_stuffe['box']['all']}, step=val_iter_step)
-            wandb.log({'BBox mAP_50 Val': log_stuffe['box']["50"]}, step=val_iter_step)
-            wandb.log({'BBox mAP_55 Val': log_stuffe['box']["55"]}, step=val_iter_step)
-            wandb.log({'BBox mAP_60 Val': log_stuffe['box']["60"]}, step=val_iter_step)
-            wandb.log({'BBox mAP_65 Val': log_stuffe['box']["65"]}, step=val_iter_step)
-            wandb.log({'BBox mAP_70 Val': log_stuffe['box']["70"]}, step=val_iter_step)
-            wandb.log({'BBox mAP_75 Val': log_stuffe['box']["75"]}, step=val_iter_step)
-            wandb.log({'BBox mAP_80 Val': log_stuffe['box']["80"]}, step=val_iter_step)
-            wandb.log({'BBox mAP_85 Val': log_stuffe['box']["85"]}, step=val_iter_step)
-            wandb.log({'BBox mAP_90 Val': log_stuffe['box']["90"]}, step=val_iter_step)
-            wandb.log({'BBox mAP_95 Val': log_stuffe['box']["95"]}, step=val_iter_step)
+            wandb.log({'BBox mAP_50 Val': log_stuffe['box'][50]}, step=val_iter_step)
+            wandb.log({'BBox mAP_55 Val': log_stuffe['box'][55]}, step=val_iter_step)
+            wandb.log({'BBox mAP_60 Val': log_stuffe['box'][60]}, step=val_iter_step)
+            wandb.log({'BBox mAP_65 Val': log_stuffe['box'][65]}, step=val_iter_step)
+            wandb.log({'BBox mAP_70 Val': log_stuffe['box'][70]}, step=val_iter_step)
+            wandb.log({'BBox mAP_75 Val': log_stuffe['box'][75]}, step=val_iter_step)
+            wandb.log({'BBox mAP_80 Val': log_stuffe['box'][80]}, step=val_iter_step)
+            wandb.log({'BBox mAP_85 Val': log_stuffe['box'][85]}, step=val_iter_step)
+            wandb.log({'BBox mAP_90 Val': log_stuffe['box'][90]}, step=val_iter_step)
+            wandb.log({'BBox mAP_95 Val': log_stuffe['box'][95]}, step=val_iter_step)
 
             wandb.log({'Mask mAP Avg Val':log_stuffe['mask']['all']}, step=val_iter_step)
-            wandb.log({'Mask mAP_50 Val': log_stuffe['mask']["50"]}, step=val_iter_step)
-            wandb.log({'Mask mAP_55 Val': log_stuffe['mask']["55"]}, step=val_iter_step)
-            wandb.log({'Mask mAP_60 Val': log_stuffe['mask']["60"]}, step=val_iter_step)
-            wandb.log({'Mask mAP_65 Val': log_stuffe['mask']["65"]}, step=val_iter_step)
-            wandb.log({'Mask mAP_70 Val': log_stuffe['mask']["70"]}, step=val_iter_step)
-            wandb.log({'Mask mAP_75 Val': log_stuffe['mask']["75"]}, step=val_iter_step)
-            wandb.log({'Mask mAP_80 Val': log_stuffe['mask']["80"]}, step=val_iter_step)
-            wandb.log({'Mask mAP_85 Val': log_stuffe['mask']["85"]}, step=val_iter_step)
-            wandb.log({'Mask mAP_90 Val': log_stuffe['mask']["90"]}, step=val_iter_step)
-            wandb.log({'Mask mAP_95 Val': log_stuffe['mask']["95"]}, step=val_iter_step)
+            wandb.log({'Mask mAP_50 Val': log_stuffe['mask'][50]}, step=val_iter_step)
+            wandb.log({'Mask mAP_55 Val': log_stuffe['mask'][55]}, step=val_iter_step)
+            wandb.log({'Mask mAP_60 Val': log_stuffe['mask'][60]}, step=val_iter_step)
+            wandb.log({'Mask mAP_65 Val': log_stuffe['mask'][65]}, step=val_iter_step)
+            wandb.log({'Mask mAP_70 Val': log_stuffe['mask'][70]}, step=val_iter_step)
+            wandb.log({'Mask mAP_75 Val': log_stuffe['mask'][75]}, step=val_iter_step)
+            wandb.log({'Mask mAP_80 Val': log_stuffe['mask'][80]}, step=val_iter_step)
+            wandb.log({'Mask mAP_85 Val': log_stuffe['mask'][85]}, step=val_iter_step)
+            wandb.log({'Mask mAP_90 Val': log_stuffe['mask'][90]}, step=val_iter_step)
+            wandb.log({'Mask mAP_95 Val': log_stuffe['mask'][95]}, step=val_iter_step)
 
 
         yolact_net.train()
