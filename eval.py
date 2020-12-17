@@ -1105,3 +1105,4 @@ if __name__ == '__main__':
         evaluate(net, dataset)
 
 
+#python eval.py --config=yolact_resnet50_custom_car_config --trained_model=weights/custom_resnet50_7_6200_interrupt.pth --score_threshold=0.15 --top_k=15 --images=./Testing/:./Testing/output/

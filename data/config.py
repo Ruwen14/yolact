@@ -28,34 +28,6 @@ COLORS = ((244,  67,  54),
 MEANS = (103.94, 116.78, 123.68)
 STD   = (57.38, 57.12, 58.40)
 
-COCO_CLASSES = ('person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
-                'train', 'truck', 'boat', 'traffic light', 'fire hydrant',
-                'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog',
-                'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe',
-                'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee',
-                'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat',
-                'baseball glove', 'skateboard', 'surfboard', 'tennis racket',
-                'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl',
-                'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot',
-                'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch',
-                'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop',
-                'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven',
-                'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase',
-                'scissors', 'teddy bear', 'hair drier', 'toothbrush')
-
-COCO_LABEL_MAP = { 1:  1,  2:  2,  3:  3,  4:  4,  5:  5,  6:  6,  7:  7,  8:  8,
-                   9:  9, 10: 10, 11: 11, 13: 12, 14: 13, 15: 14, 16: 15, 17: 16,
-                  18: 17, 19: 18, 20: 19, 21: 20, 22: 21, 23: 22, 24: 23, 25: 24,
-                  27: 25, 28: 26, 31: 27, 32: 28, 33: 29, 34: 30, 35: 31, 36: 32,
-                  37: 33, 38: 34, 39: 35, 40: 36, 41: 37, 42: 38, 43: 39, 44: 40,
-                  46: 41, 47: 42, 48: 43, 49: 44, 50: 45, 51: 46, 52: 47, 53: 48,
-                  54: 49, 55: 50, 56: 51, 57: 52, 58: 53, 59: 54, 60: 55, 61: 56,
-                  62: 57, 63: 58, 64: 59, 65: 60, 67: 61, 70: 62, 72: 63, 73: 64,
-                  74: 65, 75: 66, 76: 67, 77: 68, 78: 69, 79: 70, 80: 71, 81: 72,
-                  82: 73, 84: 74, 85: 75, 86: 76, 87: 77, 88: 78, 89: 79, 90: 80}
-
-
-
 # ----------------------- CONFIG CLASS ----------------------- #
 
 class Config(object):
@@ -99,10 +71,6 @@ class Config(object):
         for k, v in vars(self).items():
             print(k, ' = ', v)
 
-
-
-
-
 # ----------------------- DATASETS ----------------------- #
 
 dataset_base = Config({
@@ -119,8 +87,6 @@ dataset_base = Config({
     # Whether or not to load GT. If this is False, eval.py quantitative evaluation won't work.
     'has_gt': True,
 
-    # A list of names for each of you classes.
-    'class_names': COCO_CLASSES,
 
     # COCO class ids aren't sequential, so this is a bandage fix. If your ids aren't sequential,
     # provide a map from category_id -> index in class_names + 1 (the +1 is there because it's 1-indexed).
@@ -131,66 +97,17 @@ dataset_base = Config({
 custom_car_dataset = dataset_base.copy({
     'name': 'Aerial Car Detection - Synthetic',
 
-    'train_images': '.dataset/Dataset_synth_rezised/train/images/',
-    'train_info':   '.dataset/Dataset_synth_rezised/train/synthetic_train_annotations.json',
+    'train_images': './dataset/Dataset_synth_rezised/train/images/',
+    'train_info':   './dataset/Dataset_synth_rezised/train/synthetic_train_annotations.json',
 
-    'valid_images': '.dataset/Dataset_synth_rezised/val/images/',
-    'valid_info':   '.dataset/Dataset_synth_rezised/val/synthetic_val_annotations.json',
+    'valid_images': './dataset/Dataset_synth_rezised/val/images/',
+    'valid_info':   './dataset/Dataset_synth_rezised/val/synthetic_val_annotations.json',
 
     'has_gt': True,
 
     'class_names': ('car',),
     'label_map': { 1:  1 }
 })
-
-
-coco2014_dataset = dataset_base.copy({
-    'name': 'COCO 2014',
-    
-    'train_info': './data/coco/annotations/instances_train2014.json',
-    'valid_info': './data/coco/annotations/instances_val2014.json',
-
-    'label_map': COCO_LABEL_MAP
-})
-
-coco2017_dataset = dataset_base.copy({
-    'name': 'COCO 2017',
-    
-    'train_info': './data/coco/annotations/instances_train2017.json',
-    'valid_info': './data/coco/annotations/instances_val2017.json',
-
-    'label_map': COCO_LABEL_MAP
-})
-
-coco2017_testdev_dataset = dataset_base.copy({
-    'name': 'COCO 2017 Test-Dev',
-
-    'valid_info': './data/coco/annotations/image_info_test-dev2017.json',
-    'has_gt': False,
-
-    'label_map': COCO_LABEL_MAP
-})
-
-PASCAL_CLASSES = ("aeroplane", "bicycle", "bird", "boat", "bottle",
-                  "bus", "car", "cat", "chair", "cow", "diningtable",
-                  "dog", "horse", "motorbike", "person", "pottedplant",
-                  "sheep", "sofa", "train", "tvmonitor")
-
-pascal_sbd_dataset = dataset_base.copy({
-    'name': 'Pascal SBD 2012',
-
-    'train_images': './data/sbd/img',
-    'valid_images': './data/sbd/img',
-    
-    'train_info': './data/sbd/pascal_sbd_train.json',
-    'valid_info': './data/sbd/pascal_sbd_val.json',
-
-    'class_names': PASCAL_CLASSES,
-})
-
-
-
-
 
 # ----------------------- TRANSFORMS ----------------------- #
 
@@ -200,26 +117,6 @@ resnet_transform = Config({
     'subtract_means': False,
     'to_float': False,
 })
-
-vgg_transform = Config({
-    # Note that though vgg is traditionally BGR,
-    # the channel order of vgg_reducedfc.pth is RGB.
-    'channel_order': 'RGB',
-    'normalize': False,
-    'subtract_means': True,
-    'to_float': False,
-})
-
-darknet_transform = Config({
-    'channel_order': 'RGB',
-    'normalize': False,
-    'subtract_means': False,
-    'to_float': True,
-})
-
-
-
-
 
 # ----------------------- BACKBONES ----------------------- #
 
@@ -251,22 +148,6 @@ resnet101_backbone = backbone_base.copy({
     'pred_aspect_ratios': [ [[0.66685089, 1.7073535, 0.87508774, 1.16524493, 0.49059086]] ] * 6,
 })
 
-resnet101_gn_backbone = backbone_base.copy({
-    'name': 'ResNet101_GN',
-    'path': 'R-101-GN.pkl',
-    'type': ResNetBackboneGN,
-    'args': ([3, 4, 23, 3],),
-    'transform': resnet_transform,
-
-    'selected_layers': list(range(2, 8)),
-    'pred_scales': [[1]]*6,
-    'pred_aspect_ratios': [ [[0.66685089, 1.7073535, 0.87508774, 1.16524493, 0.49059086]] ] * 6,
-})
-
-resnet101_dcn_inter3_backbone = resnet101_backbone.copy({
-    'name': 'ResNet101_DCN_Interval3',
-    'args': ([3, 4, 23, 3], [0, 4, 23, 3], 3),
-})
 
 resnet50_backbone = resnet101_backbone.copy({
     'name': 'ResNet50',
@@ -275,48 +156,6 @@ resnet50_backbone = resnet101_backbone.copy({
     'args': ([3, 4, 6, 3],),
     'transform': resnet_transform,
 })
-
-resnet50_dcnv2_backbone = resnet50_backbone.copy({
-    'name': 'ResNet50_DCNv2',
-    'args': ([3, 4, 6, 3], [0, 4, 6, 3]),
-})
-
-darknet53_backbone = backbone_base.copy({
-    'name': 'DarkNet53',
-    'path': 'darknet53.pth',
-    'type': DarkNetBackbone,
-    'args': ([1, 2, 8, 8, 4],),
-    'transform': darknet_transform,
-
-    'selected_layers': list(range(3, 9)),
-    'pred_scales': [[3.5, 4.95], [3.6, 4.90], [3.3, 4.02], [2.7, 3.10], [2.1, 2.37], [1.8, 1.92]],
-    'pred_aspect_ratios': [ [[1, sqrt(2), 1/sqrt(2), sqrt(3), 1/sqrt(3)][:n], [1]] for n in [3, 5, 5, 5, 3, 3] ],
-})
-
-vgg16_arch = [[64, 64],
-              [ 'M', 128, 128],
-              [ 'M', 256, 256, 256],
-              [('M', {'kernel_size': 2, 'stride': 2, 'ceil_mode': True}), 512, 512, 512],
-              [ 'M', 512, 512, 512],
-              [('M',  {'kernel_size': 3, 'stride':  1, 'padding':  1}),
-               (1024, {'kernel_size': 3, 'padding': 6, 'dilation': 6}),
-               (1024, {'kernel_size': 1})]]
-
-vgg16_backbone = backbone_base.copy({
-    'name': 'VGG16',
-    'path': 'vgg16_reducedfc.pth',
-    'type': VGGBackbone,
-    'args': (vgg16_arch, [(256, 2), (128, 2), (128, 1), (128, 1)], [3]),
-    'transform': vgg_transform,
-
-    'selected_layers': [3] + list(range(5, 10)),
-    'pred_scales': [[5, 4]]*6,
-    'pred_aspect_ratios': [ [[1], [1, sqrt(2), 1/sqrt(2), sqrt(3), 1/sqrt(3)][:n]] for n in [3, 5, 5, 5, 3, 3] ],
-})
-
-
-
-
 
 # ----------------------- MASK BRANCH TYPES ----------------------- #
 
@@ -380,10 +219,6 @@ mask_type = Config({
     'lincomb': 1,
 })
 
-
-
-
-
 # ----------------------- ACTIVATION FUNCTIONS ----------------------- #
 
 activation_func = Config({
@@ -393,10 +228,6 @@ activation_func = Config({
     'relu':    lambda x: torch.nn.functional.relu(x, inplace=True),
     'none':    lambda x: x,
 })
-
-
-
-
 
 # ----------------------- FPN DEFAULTS ----------------------- #
 
@@ -424,14 +255,9 @@ fpn_base = Config({
     'relu_pred_layers': True,
 })
 
-
-
-
-
 # ----------------------- CONFIG DEFAULTS ----------------------- #
 
 coco_base_config = Config({
-    'dataset': coco2014_dataset,
     'num_classes': 81, # This should include the background class
 
     'max_iter': 400000,
@@ -663,17 +489,13 @@ coco_base_config = Config({
     'maskious_to_train': -1,
 })
 
-
-
-
-
 # ----------------------- YOLACT v1.0 CONFIGS ----------------------- #
 yolact_base_config = coco_base_config.copy({
     'name': 'yolact_base',
 
     # Dataset stuff
-    'dataset': coco2017_dataset,
-    'num_classes': len(coco2017_dataset.class_names) + 1,
+    # 'dataset': coco2017_dataset,
+    # 'num_classes': len(coco2017_dataset.class_names) + 1,
 
     # Image Size
     'max_size': 550,
@@ -719,38 +541,6 @@ yolact_base_config = coco_base_config.copy({
 })
 
 
-yolact_im400_config = yolact_base_config.copy({
-    'name': 'yolact_im400',
-
-    'max_size': 400,
-    'backbone': yolact_base_config.backbone.copy({
-        'pred_scales': [[int(x[0] / yolact_base_config.max_size * 400)] for x in yolact_base_config.backbone.pred_scales],
-    }),
-})
-
-yolact_im700_config = yolact_base_config.copy({
-    'name': 'yolact_im700',
-
-    'masks_to_train': 300,
-    'max_size': 700,
-    'backbone': yolact_base_config.backbone.copy({
-        'pred_scales': [[int(x[0] / yolact_base_config.max_size * 700)] for x in yolact_base_config.backbone.pred_scales],
-    }),
-})
-
-yolact_darknet53_config = yolact_base_config.copy({
-    'name': 'yolact_darknet53',
-
-    'backbone': darknet53_backbone.copy({
-        'selected_layers': list(range(2, 5)),
-        
-        'pred_scales': yolact_base_config.backbone.pred_scales,
-        'pred_aspect_ratios': yolact_base_config.backbone.pred_aspect_ratios,
-        'use_pixel_scales': True,
-        'preapply_sqrt': False,
-        'use_square_anchors': True, # This is for backward compatability with a bug
-    }),
-})
 
 yolact_resnet50_config = yolact_base_config.copy({
     'name': 'yolact_resnet50',
@@ -788,62 +578,6 @@ yolact_resnet50_custom_car_config = yolact_resnet50_config.copy({
     'augment_random_rot90': True,
 })
 
-
-yolact_resnet50_pascal_config = yolact_resnet50_config.copy({
-    'name': None, # Will default to yolact_resnet50_pascal
-    
-    # Dataset stuff
-    'dataset': pascal_sbd_dataset,
-    'num_classes': len(pascal_sbd_dataset.class_names) + 1,
-
-    'max_iter': 120000,
-    'lr_steps': (60000, 100000),
-    
-    'backbone': yolact_resnet50_config.backbone.copy({
-        'pred_scales': [[32], [64], [128], [256], [512]],
-        'use_square_anchors': False,
-    })
-})
-
-# ----------------------- YOLACT++ CONFIGS ----------------------- #
-
-yolact_plus_base_config = yolact_base_config.copy({
-    'name': 'yolact_plus_base',
-
-    'backbone': resnet101_dcn_inter3_backbone.copy({
-        'selected_layers': list(range(1, 4)),
-        
-        'pred_aspect_ratios': [ [[1, 1/2, 2]] ]*5,
-        'pred_scales': [[i * 2 ** (j / 3.0) for j in range(3)] for i in [24, 48, 96, 192, 384]],
-        'use_pixel_scales': True,
-        'preapply_sqrt': False,
-        'use_square_anchors': False,
-    }),
-
-    'use_maskiou': True,
-    'maskiou_net': [(8, 3, {'stride': 2}), (16, 3, {'stride': 2}), (32, 3, {'stride': 2}), (64, 3, {'stride': 2}), (128, 3, {'stride': 2})],
-    'maskiou_alpha': 25,
-    'rescore_bbox': False,
-    'rescore_mask': True,
-
-    'discard_mask_area': 5*5,
-})
-
-yolact_plus_resnet50_config = yolact_plus_base_config.copy({
-    'name': 'yolact_plus_resnet50',
-
-    'backbone': resnet50_dcnv2_backbone.copy({
-        'selected_layers': list(range(1, 4)),
-        
-        'pred_aspect_ratios': [ [[1, 1/2, 2]] ]*5,
-        'pred_scales': [[i * 2 ** (j / 3.0) for j in range(3)] for i in [24, 48, 96, 192, 384]],
-        'use_pixel_scales': True,
-        'preapply_sqrt': False,
-        'use_square_anchors': False,
-    }),
-})
-
-
 # Default config
 cfg = yolact_base_config.copy()
 
@@ -861,3 +595,4 @@ def set_cfg(config_name:str):
 def set_dataset(dataset_name:str):
     """ Sets the dataset of the current config. """
     cfg.dataset = eval(dataset_name)
+

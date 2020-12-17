@@ -502,3 +502,6 @@ def setup_eval():
 
 if __name__ == '__main__':
     train()
+
+
+#python train.py --config=yolact_resnet50_custom_car_config  --save_interval=1000 --validation_size=3000
