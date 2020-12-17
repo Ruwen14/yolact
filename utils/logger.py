@@ -104,7 +104,7 @@ class Log:
         Values should be json-serializable.
         """
         info = {}
-        
+
         info['type'] = type
         info['session'] = self.session
 
@@ -125,7 +125,7 @@ class Log:
 
         with open(self.log_path, 'a') as f:
             f.write(out)
-
+        return info['data']
 
 class LogEntry():
     """ A class that allows you to navigate a dictonary using x.a.b[2].c, etc. """

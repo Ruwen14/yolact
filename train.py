@@ -21,6 +21,13 @@ import numpy as np
 import argparse
 import datetime
 
+#custom imports
+import wandb
+
+os.environ["WANDB_API_KEY"] = '394a71acf1f77ccd2c3053411559cb13b305165a'
+os.environ["WANDB_MODE"] = "dryrun"
+wandb.init(name='First_Synth_Run', project='bachelorarbeit')
+
 # Oof
 import eval as eval_script
 
@@ -56,11 +63,11 @@ parser.add_argument('--log_folder', default='logs/',
                     help='Directory for saving logs.')
 parser.add_argument('--config', default=None,
                     help='The config object to use.')
-parser.add_argument('--save_interval', default=10000, type=int,
+parser.add_argument('--save_interval', default=1000, type=int,
                     help='The number of iterations between saving the model.')
-parser.add_argument('--validation_size', default=5000, type=int,
+parser.add_argument('--validation_size', default=3000, type=int,
                     help='The number of images to use for validation.')
-parser.add_argument('--validation_epoch', default=2, type=int,
+parser.add_argument('--validation_epoch', default=1, type=int,
                     help='Output validation information every n iterations. If -1, do no validation.')
 parser.add_argument('--keep_latest', dest='keep_latest', action='store_true',
                     help='Only keep the latest checkpoint instead of each one.')
@@ -258,6 +265,19 @@ def train():
     global loss_types # Forms the print order
     loss_avgs  = { k: MovingAverage(100) for k in loss_types }
 
+    wandb.config.update({
+        'max_iter': cfg.max_iter,
+        'epoch_size': epoch_size,
+        'num_epochs': num_epochs,
+        'batch_size':args.batch_size,
+        'init_lr': cfg.lr,
+        'init_momentum':cfg.momentum,
+        'init_decay':cfg.decay,
+        'init_lr_steps':cfg.lr_steps,
+        'pred_aspect_ratios': [ [[1, 1/2, 2]] ]*5,
+        'pred_scales': [[24], [48], [96], [192], [384]]
+    })
+
     print('Begin training!')
     print()
     # try-except so you can use ctrl+c to save early and stop training
@@ -338,7 +358,7 @@ def train():
                     print(('[%3d] %7d ||' + (' %s: %.3f |' * len(losses)) + ' T: %.3f || ETA: %s || timer: %.3f')
                             % tuple([epoch, iteration] + loss_labels + [total, eta_str, elapsed]), flush=True)
 
-                if args.log:
+                if args.log and iteration % 20 == 0:
                     precision = 5
                     loss_info = {k: round(losses[k].item(), precision) for k in losses}
                     loss_info['T'] = round(loss.item(), precision)
@@ -346,8 +366,19 @@ def train():
                     if args.log_gpu:
                         log.log_gpu_stats = (iteration % 10 == 0) # nvidia-smi is sloooow
                         
-                    log.log('train', loss=loss_info, epoch=epoch, iter=iteration,
+                    log_stuff = log.log('train', loss=loss_info, epoch=epoch, iter=iteration,
                         lr=round(cur_lr, 10), elapsed=elapsed)
+
+                    iter_step = log_stuff['iter']
+                    wandb.log({'train_loss_Box': log_stuff['loss']['B']}, step=iter_step)
+                    wandb.log({'train_loss_Mask': log_stuff['loss']['M']}, step=iter_step)
+                    wandb.log({'train_loss_Class_Confidence ': log_stuff['loss']['C']}, step=iter_step)
+                    wandb.log({'train_loss_Semantic_Segm ': log_stuff['loss']['S']}, step=iter_step)
+                    wandb.log({'train_loss_Total': log_stuff['loss']['T']}, step=iter_step)
+                    wandb.log({'lr': log_stuff['lr']}, step=iter_step)
+                    wandb.log({'epoch': log_stuff['epoch']})
+
+
 
                     log.log_gpu_stats = args.log_gpu
                 
@@ -380,9 +411,11 @@ def train():
             SavePath.remove_interrupt(args.save_folder)
             
             yolact_net.save_weights(save_path(epoch, repr(iteration) + '_interrupt'))
+            wandb.run.save()
         exit()
 
     yolact_net.save_weights(save_path(epoch, iteration))
+    wandb.run.save()
 
 
 def set_lr(optimizer, new_lr):
@@ -493,12 +526,40 @@ def compute_validation_map(epoch, iteration, yolact_net, dataset, log:Log=None):
         end = time.time()
 
         if log is not None:
-            log.log('val', val_info, elapsed=(end - start), epoch=epoch, iter=iteration)
+            log_stuffe = log.log('val', val_info, elapsed=(end - start), epoch=epoch, iter=iteration)
+            val_iter_step = log_stuffe['iter']
+            wandb.log({'val_epoch':log_stuffe['epoch']})
+            wandb.log({'val_mAP_box_all':log_stuffe['box']['all']}, step=val_iter_step)
+            wandb.log({'val_mAP_box_50': log_stuffe['box']['50']}, step=val_iter_step)
+            wandb.log({'val_mAP_box_55': log_stuffe['box']['55']}, step=val_iter_step)
+            wandb.log({'val_mAP_box_60': log_stuffe['box']['60']}, step=val_iter_step)
+            wandb.log({'val_mAP_box_65': log_stuffe['box']['65']}, step=val_iter_step)
+            wandb.log({'val_mAP_box_70': log_stuffe['box']['70']}, step=val_iter_step)
+            wandb.log({'val_mAP_box_75': log_stuffe['box']['75']}, step=val_iter_step)
+            wandb.log({'val_mAP_box_80': log_stuffe['box']['80']}, step=val_iter_step)
+            wandb.log({'val_mAP_box_85': log_stuffe['box']['85']}, step=val_iter_step)
+            wandb.log({'val_mAP_box_90': log_stuffe['box']['90']}, step=val_iter_step)
+            wandb.log({'val_mAP_box_95': log_stuffe['box']['95']}, step=val_iter_step)
+
+            wandb.log({'val_mAP_mask_all':log_stuffe['mask']['all']}, step=val_iter_step)
+            wandb.log({'val_mAP_mask_50': log_stuffe['mask']['50']}, step=val_iter_step)
+            wandb.log({'val_mAP_mask_55': log_stuffe['mask']['55']}, step=val_iter_step)
+            wandb.log({'val_mAP_mask_60': log_stuffe['mask']['60']}, step=val_iter_step)
+            wandb.log({'val_mAP_mask_65': log_stuffe['mask']['65']}, step=val_iter_step)
+            wandb.log({'val_mAP_mask_70': log_stuffe['mask']['70']}, step=val_iter_step)
+            wandb.log({'val_mAP_mask_75': log_stuffe['mask']['75']}, step=val_iter_step)
+            wandb.log({'val_mAP_mask_80': log_stuffe['mask']['80']}, step=val_iter_step)
+            wandb.log({'val_mAP_mask_85': log_stuffe['mask']['85']}, step=val_iter_step)
+            wandb.log({'val_mAP_mask_90': log_stuffe['mask']['90']}, step=val_iter_step)
+            wandb.log({'val_mAP_mask_95': log_stuffe['mask']['95']}, step=val_iter_step)
+
 
         yolact_net.train()
 
 def setup_eval():
     eval_script.parse_args(['--no_bar', '--max_images='+str(args.validation_size)])
+
+
 
 if __name__ == '__main__':
     train()

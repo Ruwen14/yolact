@@ -10,6 +10,8 @@ __pycache__/
 .Python
 env/
 build/
+Testing/
+logs/
 develop-eggs/
 dist/
 downloads/
@@ -29,7 +31,8 @@ weights/
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
-
+Test.py
+test2.py
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
