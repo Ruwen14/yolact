@@ -278,7 +278,7 @@ def train():
         'pred_scales': [[24], [48], [96], [192], [384]]
     })
 
-    print('Begin training!')
+    print(f'Begin training! for {cfg.max_iter} iterations and {num_epochs} epochs at max')
     print()
     # try-except so you can use ctrl+c to save early and stop training
     try:
