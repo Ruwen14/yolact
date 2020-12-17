@@ -184,7 +184,14 @@ def train():
                             info_file=cfg.dataset.train_info,
                             transform=SSDAugmentation(MEANS))
     
-    if args.validation_epoch > 0:
+    # if args.validation_epoch > 0:
+    #     setup_eval()
+    #     val_dataset = COCODetection(image_path=cfg.dataset.valid_images,
+    #                                 info_file=cfg.dataset.valid_info,
+    #                                 transform=BaseTransform(MEANS))
+
+    #custom
+    if args.validation_epoch == 0:
         setup_eval()
         val_dataset = COCODetection(image_path=cfg.dataset.valid_images,
                                     info_file=cfg.dataset.valid_info,
@@ -383,6 +390,9 @@ def train():
                     log.log_gpu_stats = args.log_gpu
                 
                 iteration += 1
+
+                #custom
+                compute_validation_map(epoch, iteration, yolact_net, val_dataset, log if args.log else None)
 
                 if iteration % args.save_interval == 0 and iteration != args.start_iter:
                     if args.keep_latest:
