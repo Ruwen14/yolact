@@ -45,7 +45,7 @@ info = {"type": "val", "session": 0, "data": {"elapsed": 151.17388677597046, "ep
 log_stuff= yeet(info)
 val_epoch = log_stuff['epoch']
 val_iter_step = log_stuff['iter']
-print(val_iter_step)
+print(log_stuff['box']['50'])
 wandb.log({'val_mAP_box_all': log_stuff['box']['all']}, step=val_epoch)
 wandb.log({'val_mAP_box_50': log_stuff['box']['50']}, step=val_epoch)
 wandb.log({'val_mAP_box_55': log_stuff['box']['55']}, step=val_epoch)
