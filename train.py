@@ -235,7 +235,7 @@ def train():
     net = CustomDataParallel(NetLoss(net, criterion))
     if args.cuda:
         net = net.cuda()
-    
+        
     # Initialize everything
     if not cfg.freeze_bn: yolact_net.freeze_bn() # Freeze bn so we don't kill our means
     yolact_net(torch.zeros(1, 3, cfg.max_size, cfg.max_size).cuda())
