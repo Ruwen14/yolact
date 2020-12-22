@@ -133,7 +133,12 @@ class SavePath:
     def remove_interrupt(save_folder):
         for p in Path(save_folder).glob('*_interrupt.pth'):
             p.unlink()
-    
+            
+    @staticmethod
+    def prev_best(save_folder):
+        for p in Path(save_folder).glob('*_mAP*'):
+            p.unlink()
+
     @staticmethod
     def get_interrupt(save_folder):
         for p in Path(save_folder).glob('*_interrupt.pth'): 
