@@ -421,17 +421,29 @@ def train():
 
             # This is done after each epoch
             if args.validation_epoch > 0:
-                cur_mask_mAP = compute_validation_map(epoch=epoch, iteration=last_iter_entry, yolact_net=yolact_net, dataset=val_dataset,
-                                       log=log if args.log else None)
-                if cur_mask_mAP > best_mask_mAP:
-                    best_mask_mAP = cur_mask_mAP
-                    print(f'Found new best Mask mAP with {best_mask_mAP} %, Saving weights ...\n')
+                try:
+                    cur_mask_mAP = compute_validation_map(epoch=epoch, iteration=last_iter_entry, yolact_net=yolact_net, dataset=val_dataset,
+                                           log=log if args.log else None)
+                    if cur_mask_mAP > best_mask_mAP:
+                        best_mask_mAP = cur_mask_mAP
+                        print(f'Found new best Mask mAP with {best_mask_mAP} %, Saving weights ...\n')
 
-                    SavePath.remove_prev_best(args.save_folder)
-                    yolact_net.save_weights(save_path(epoch, repr(last_iter_entry) + f'_mAP{best_mask_mAP}'))
+                        SavePath.remove_prev_best(args.save_folder)
+                        yolact_net.save_weights(save_path(epoch, repr(last_iter_entry) + f'_mAP{best_mask_mAP}'))
 
-                compute_validation_loss(net=net, data_loader=val_data_loader, epoch=epoch, iteration=last_iter_entry,
-                                            log=log if args.log else None)
+                    compute_validation_loss(net=net, data_loader=val_data_loader, epoch=epoch, iteration=last_iter_entry,
+                                                log=log if args.log else None)
+                except KeyboardInterrupt:
+                    if args.interrupt:
+                        print('Stopping early. Saving network...')
+
+                        # Delete previous copy of the interrupted network so we don't spam the weights folder
+                        SavePath.remove_interrupt(args.save_folder)
+
+                        yolact_net.save_weights(save_path(epoch, repr(iteration) + '_interrupt'))
+                        wandb.run.save()
+                    exit()
+
         # Compute validation mAP after training is finished
         compute_validation_map(epoch, iteration, yolact_net, val_dataset, log if args.log else None)
     except KeyboardInterrupt:
