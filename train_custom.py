@@ -28,7 +28,7 @@ import wandb
 os.environ["WANDB_API_KEY"] = '394a71acf1f77ccd2c3053411559cb13b305165a'
 os.environ["WANDB_MODE"] = "dryrun"
 run_name = input("[INPUT] Name run:") + f'_{uuid.uuid4().hex[:4]}'
-wandb.init(name=run_name,id=run_name, project='YOLACT')
+run = wandb.init(name=run_name,id=run_name, project='YOLACT')
 
 # Oof
 import eval as eval_script
@@ -422,8 +422,9 @@ def train():
             # This is done after each epoch
             if args.validation_epoch > 0:
                 try:
-                    cur_mask_mAP = compute_validation_map(epoch=epoch, iteration=last_iter_entry, yolact_net=yolact_net, dataset=val_dataset,
-                                           log=log if args.log else None)
+                    cur_mask_mAP = compute_validation_map(epoch=epoch, iteration=last_iter_entry, yolact_net=yolact_net,
+                                                          dataset=val_dataset,
+                                                          log=log if args.log else None)
                     if cur_mask_mAP > best_mask_mAP:
                         best_mask_mAP = cur_mask_mAP
                         print(f'Found new best Mask mAP with {best_mask_mAP} %, Saving weights ...\n')
@@ -431,8 +432,9 @@ def train():
                         SavePath.remove_prev_best(args.save_folder)
                         yolact_net.save_weights(save_path(epoch, repr(last_iter_entry) + f'_mAP{best_mask_mAP}'))
 
-                    compute_validation_loss(net=net, data_loader=val_data_loader, epoch=epoch, iteration=last_iter_entry,
-                                                log=log if args.log else None)
+                    compute_validation_loss(net=net, data_loader=val_data_loader, epoch=epoch,
+                                            iteration=last_iter_entry,
+                                            log=log if args.log else None)
                 except KeyboardInterrupt:
                     if args.interrupt:
                         print('Stopping early. Saving network...')
@@ -441,11 +443,11 @@ def train():
                         SavePath.remove_interrupt(args.save_folder)
 
                         yolact_net.save_weights(save_path(epoch, repr(iteration) + '_interrupt'))
-                        wandb.run.save()
+                        run.save()
                     exit()
 
         # Compute validation mAP after training is finished
-        compute_validation_map(epoch, iteration, yolact_net, val_dataset, log if args.log else None)
+        compute_validation_map(epoch=epoch, iteration=last_iter_entry, yolact_net=yolact_net,dataset=val_dataset,log=log if args.log else None)
     except KeyboardInterrupt:
         if args.interrupt:
             print('Stopping early. Saving network...')
@@ -454,10 +456,10 @@ def train():
             SavePath.remove_interrupt(args.save_folder)
 
             yolact_net.save_weights(save_path(epoch, repr(iteration) + '_interrupt'))
-            wandb.run.save()
+            run.save()
         exit()
     yolact_net.save_weights(save_path(epoch, iteration))
-    wandb.run.save()
+    run.save()
 
 
 def set_lr(optimizer, new_lr):
@@ -628,3 +630,4 @@ if __name__ == '__main__':
     train()
 
 # python train.py --config=yolact_resnet50_custom_car_config  --save_interval=1000 --validation_size=3000
+#python train_custom.py --config=yolact_resnet50_custom_car_config  --save_interval=1000 --validation_size=300
