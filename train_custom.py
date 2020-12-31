@@ -444,7 +444,7 @@ def train():
 
                         yolact_net.save_weights(save_path(epoch, repr(iteration) + '_interrupt'))
                         run.save()
-                    exit()
+                    sys.exit()
 
         # Compute validation mAP after training is finished
         compute_validation_map(epoch=epoch, iteration=last_iter_entry, yolact_net=yolact_net,dataset=val_dataset,log=log if args.log else None)
@@ -457,7 +457,7 @@ def train():
 
             yolact_net.save_weights(save_path(epoch, repr(iteration) + '_interrupt'))
             run.save()
-        exit()
+        sys.exit()
     yolact_net.save_weights(save_path(epoch, iteration))
     run.save()
 
