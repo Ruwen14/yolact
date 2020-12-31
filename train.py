@@ -24,9 +24,7 @@ import datetime
 #custom imports
 import wandb
 
-os.environ["WANDB_API_KEY"] = '394a71acf1f77ccd2c3053411559cb13b305165a'
 os.environ["WANDB_MODE"] = "dryrun"
-wandb.init(name='First_Synth_Run', project='bachelorarbeit')
 
 # Oof
 import eval as eval_script
