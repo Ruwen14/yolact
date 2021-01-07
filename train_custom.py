@@ -301,6 +301,7 @@ def train():
     print(f'Begin training! for {cfg.max_iter} iterations and {num_epochs} epochs at max')
     print(f'training on {len(dataset)} images | validating on {len(val_dataset)} images')
     print('preserve_aspect_ratio',cfg.preserve_aspect_ratio)
+    print('LR_steps', cfg.lr_steps)
     # try-except so you can use ctrl+c to save early and stop training
     try:
         for epoch in range(num_epochs):

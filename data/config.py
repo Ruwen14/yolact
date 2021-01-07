@@ -565,6 +565,8 @@ yolact_resnet50_custom_car_config = yolact_resnet50_config.copy({
 
     'max_iter': 18750,
 
+    'lr_steps': (6500, 14000, 16000, 17500),
+
     'augment_photometric_distort': True,
     # Have a chance to scale down the image and pad (to emulate smaller detections)
     'augment_expand': True,
