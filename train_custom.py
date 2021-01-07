@@ -402,7 +402,7 @@ def train():
                     iter_step = log_stuff['iter']
                     wandb.log({'[TRAIN] BBox Loss': log_stuff['loss']['B']}, step=iter_step)
                     wandb.log({'[TRAIN] Mask Loss': log_stuff['loss']['M']}, step=iter_step)
-                    wandb.log({'[TRAIN] Class Conf. Loss ': log_stuff['loss']['C']}, step=iter_step)
+                    wandb.log({'[TRAIN] Class Conf. Loss': log_stuff['loss']['C']}, step=iter_step)
                     wandb.log({'[TRAIN] Sem. Segmentation Loss': log_stuff['loss']['S']}, step=iter_step)
                     wandb.log({'[TRAIN] Overall Training Loss': log_stuff['loss']['T']}, step=iter_step)
                     wandb.log({'Learning Rate': log_stuff['lr']}, step=iter_step)
@@ -578,7 +578,7 @@ def compute_validation_loss(net, data_loader, epoch, iteration,  log: Log = None
         val_iter_step_loss = log_stuffee['iter']
         wandb.log({'[VAL] BBox Loss': log_stuffee['loss']['B']}, step=val_iter_step_loss)
         wandb.log({'[VAL] Mask Loss': log_stuffee['loss']['M']}, step=val_iter_step_loss)
-        wandb.log({'[VAL] Class Conf. Loss ': log_stuffee['loss']['C']}, step=val_iter_step_loss)
+        wandb.log({'[VAL] Class Conf. Loss': log_stuffee['loss']['C']}, step=val_iter_step_loss)
         wandb.log({'[VAL] Sem. Segmentation Loss': log_stuffee['loss']['S']}, step=val_iter_step_loss)
         wandb.log({'[VAL] Overall Validation Loss': log_stuffee['loss']['T']}, step=val_iter_step_loss)
         # wandb.log({'Epoch Val': log_stuffee['epoch']})
