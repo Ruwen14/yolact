@@ -140,7 +140,6 @@ data/coco/images/
 data/coco/annotations/
 ap_data.pkl
 results/
-logs/
 scripts/aws/
 scripts/gt.npy
 scripts/proto.npy
@@ -161,3 +160,8 @@ vid/
 vidres/
 
 _.py
+
+
+#except
+
+!RUNS/*/offline*/logs
