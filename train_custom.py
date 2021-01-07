@@ -299,7 +299,8 @@ def train():
     best_mask_mAP = 0
 
     print(f'Begin training! for {cfg.max_iter} iterations and {num_epochs} epochs at max')
-    print()
+    print(f'training on {len(dataset)} images | validating on {len(val_dataset)} images')
+    print('preserve_aspect_ratio',cfg.preserve_aspect_ratio)
     # try-except so you can use ctrl+c to save early and stop training
     try:
         for epoch in range(num_epochs):
@@ -630,4 +631,4 @@ if __name__ == '__main__':
     train()
 
 # python train.py --config=yolact_resnet50_custom_car_config  --save_interval=1000 --validation_size=3000
-#python train_custom.py --config=yolact_resnet50_custom_car_config  --save_interval=1000 --validation_size=300
+#python train_custom.py --config=yolact_resnet50_custom_car_config  --save_interval=1000 --validation_size=1328 --num_workers=4

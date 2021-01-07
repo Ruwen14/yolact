@@ -97,11 +97,11 @@ dataset_base = Config({
 custom_car_dataset = dataset_base.copy({
     'name': 'Aerial Car Detection - Synthetic',
 
-    'train_images': './dataset/Dataset_synth_rezised/train/images/',
-    'train_info':   './dataset/Dataset_synth_rezised/train/synthetic_train_annotations.json',
+    'train_images': './dataset/Dataset_squished/train/images/',
+    'train_info':   './dataset/Dataset_squished/train/synthetic_train_annotations.json',
 
-    'valid_images': './dataset/Dataset_synth_rezised/val/images/',
-    'valid_info':   './dataset/Dataset_synth_rezised/val/synthetic_val_annotations.json',
+    'valid_images': './dataset/Dataset_squished/val/images/',
+    'valid_info':   './dataset/Dataset_squished/val/val_annotations.json',
 
     'has_gt': True,
 
@@ -563,7 +563,7 @@ yolact_resnet50_custom_car_config = yolact_resnet50_config.copy({
     'dataset': custom_car_dataset,
     'num_classes': len(custom_car_dataset.class_names) + 1,
 
-    'max_iter': 100000,
+    'max_iter': 18750,
 
     'augment_photometric_distort': True,
     # Have a chance to scale down the image and pad (to emulate smaller detections)
@@ -576,6 +576,8 @@ yolact_resnet50_custom_car_config = yolact_resnet50_config.copy({
     'augment_random_flip': True,
     # With uniform probability, rotate the image [0,90,180,270] degrees
     'augment_random_rot90': True,
+
+    'preserve_aspect_ratio': False,
 })
 
 # Default config
