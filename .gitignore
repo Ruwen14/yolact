@@ -164,4 +164,4 @@ _.py
 
 #except
 
-!RUNS/*/offline*/logs
+!TRAINING_RUNS/*/offline*/logs
