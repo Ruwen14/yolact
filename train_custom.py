@@ -89,7 +89,7 @@ parser.add_argument('--batch_alloc', default=None, type=str,
 parser.add_argument('--no_autoscale', dest='autoscale', action='store_false',
                     help='YOLACT will automatically scale the lr and the number of iterations depending on the batch size. Set this if you want to disable that.')
 
-parser.set_defaults(keep_latest=False, log=True, log_gpu=False, interrupt=True, autoscale=True)
+parser.set_defaults(keep_latest=True, log=True, log_gpu=False, interrupt=True, autoscale=True)
 args = parser.parse_args()
 
 wandb.config.update(args)
@@ -308,7 +308,7 @@ def train():
     try:
         for epoch in range(num_epochs):
             print('%--------------------------------------------------------------------------------------------------------------------------------%')
-            print(f'     EPOCH [{epoch}|{num_epochs}]')
+            print(f'     EPOCH [{epoch}|{num_epochs}]     LR [{cur_lr}]     Best Mask mAP [{best_mask_mAP}]'   )
             print('%--------------------------------------------------------------------------------------------------------------------------------%')
             # Resume from start_iter
             if (epoch + 1) * epoch_size < iteration:
@@ -347,6 +347,7 @@ def train():
                 while step_index < len(cfg.lr_steps) and iteration >= cfg.lr_steps[step_index]:
                     step_index += 1
                     set_lr(optimizer, args.lr * (args.gamma ** step_index))
+                    print(f'Adjusting Learning rate to {cur_lr}')
 
                 # Zero the grad to get ready to compute gradients
                 optimizer.zero_grad()

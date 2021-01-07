@@ -1,0 +1,28 @@
+{
+    "os": "Linux-4.19.0-12-cloud-amd64-x86_64-with-debian-10.6",
+    "python": "3.7.0",
+    "heartbeatAt": "2021-01-07T15:44:19.115873",
+    "startedAt": "2021-01-07T15:44:18.632962",
+    "docker": null,
+    "gpu": "Tesla V100-SXM2-16GB",
+    "gpu_count": 1,
+    "cpu_count": 8,
+    "cuda": "11.0.207",
+    "args": [
+        "--config=yolact_resnet50_custom_car_config",
+        "--save_interval=1000",
+        "--validation_size=1328"
+    ],
+    "state": "running",
+    "codePath": "train_custom.py",
+    "program": "train_custom.py",
+    "git": {
+        "remote": "https://github.com/Ruwen14/yolact.git",
+        "commit": "92e94efd56fc2ed3a9dfabf72045eaea7de43020"
+    },
+    "email": null,
+    "root": "/home/spandalfderweisse/yolact",
+    "host": "train-squished",
+    "username": "spandalfderweisse",
+    "executable": "/opt/conda/envs/yolact-env/bin/python"
+}
