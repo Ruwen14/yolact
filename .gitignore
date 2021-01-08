@@ -127,10 +127,9 @@ test_data_aug.py
 data/coco
 data/sbd
 data/cityscapes
-
+output/
 # pylint
 .pylintrc
-
 # ssd.pytorch master branch (for merging)
 ssd.pytorch/
 

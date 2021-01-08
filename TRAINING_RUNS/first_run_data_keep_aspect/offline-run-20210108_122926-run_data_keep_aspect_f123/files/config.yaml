@@ -1,0 +1,133 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.10.12
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.7.0
+autoscale:
+  desc: null
+  value: true
+batch_alloc:
+  desc: null
+  value: null
+batch_size:
+  desc: null
+  value: 8
+best_mask_mAP:
+  desc: null
+  value: 60.86
+config:
+  desc: null
+  value: yolact_resnet50_custom_car_config
+cuda:
+  desc: null
+  value: true
+dataset:
+  desc: null
+  value: null
+decay:
+  desc: null
+  value: null
+epoch_size:
+  desc: null
+  value: 937
+gamma:
+  desc: null
+  value: null
+init_decay:
+  desc: null
+  value: 0.0005
+init_lr:
+  desc: null
+  value: 0.001
+init_lr_steps:
+  desc: null
+  value:
+  - 6500
+  - 14000
+  - 16000
+  - 17500
+init_momentum:
+  desc: null
+  value: 0.9
+interrupt:
+  desc: null
+  value: true
+keep_latest:
+  desc: null
+  value: true
+keep_latest_interval:
+  desc: null
+  value: 100000
+log:
+  desc: null
+  value: true
+log_folder:
+  desc: null
+  value: logs/
+log_gpu:
+  desc: null
+  value: false
+lr:
+  desc: null
+  value: null
+max_iter:
+  desc: null
+  value: 18750
+momentum:
+  desc: null
+  value: null
+num_epochs:
+  desc: null
+  value: 21
+num_workers:
+  desc: null
+  value: 4
+pred_aspect_ratios:
+  desc: null
+  value:
+  - - - 1
+      - 0.5
+      - 2
+  - - - 1
+      - 0.5
+      - 2
+  - - - 1
+      - 0.5
+      - 2
+  - - - 1
+      - 0.5
+      - 2
+  - - - 1
+      - 0.5
+      - 2
+pred_scales:
+  desc: null
+  value:
+  - - 24
+  - - 48
+  - - 96
+  - - 192
+  - - 384
+resume:
+  desc: null
+  value: null
+save_folder:
+  desc: null
+  value: weights/
+save_interval:
+  desc: null
+  value: 1000
+start_iter:
+  desc: null
+  value: -1
+validation_epoch:
+  desc: null
+  value: 1
+validation_size:
+  desc: null
+  value: 1328
