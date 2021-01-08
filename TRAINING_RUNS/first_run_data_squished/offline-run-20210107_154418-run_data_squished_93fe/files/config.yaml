@@ -51,6 +51,9 @@ init_lr_steps:
 init_momentum:
   desc: null
   value: 0.9
+best_mask_mAP:
+  desc: null
+  value: 60.86
 interrupt:
   desc: null
   value: true
