@@ -641,7 +641,6 @@ class FastBaseTransform(torch.nn.Module):
             img_size = (img_size[1], img_size[0])  # Pytorch needs h, w
         else:
             img_size = (cfg.max_size, cfg.max_size)
-            print(img_size)
 
         img = img.permute(0, 3, 1, 2).contiguous()
         img = F.interpolate(img, img_size, mode='bilinear', align_corners=False)
