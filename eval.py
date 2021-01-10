@@ -121,6 +121,13 @@ def parse_args(argv=None):
                         benchmark=False, no_sort=False, no_hash=False, mask_proto_debug=False, crop=True, detect=False,
                         display_fps=False,
                         emulate_playback=False)
+    # Custom
+    # parser.set_defaults(no_bar=False, display=False, resume=False, output_coco_json=False, output_web_json=False,
+    #                     shuffle=False,
+    #                     benchmark=False, no_sort=False, no_hash=False, mask_proto_debug=False, crop=True, detect=False,
+    #                     display_fps=False,
+    #                     emulate_playback=False, config='yolact_resnet50_custom_car_config',trained_model='weights/custom_resnet50_12_12180_mAP73.08.pth',
+    #                     score_threshold=0.50,top_k=15, images='./Testing:./output')
 
     global args
     args = parser.parse_args(argv)
