@@ -50,7 +50,7 @@ class Config(object):
         """
 
         ret = Config(vars(self))
-        
+
         for key, val in new_config_dict.items():
             ret.__setattr__(key, val)
 
@@ -66,7 +66,7 @@ class Config(object):
 
         for key, val in new_config_dict.items():
             self.__setattr__(key, val)
-    
+
     def print(self):
         for k, v in vars(self).items():
             print(k, ' = ', v)
@@ -96,12 +96,20 @@ dataset_base = Config({
 
 custom_car_dataset = dataset_base.copy({
     'name': 'Aerial Car Detection - Synthetic',
+    #
+    # 'train_images': './dataset/Datasat_keep_aspect/train/images/',
+    # 'train_info':   './dataset/Datasat_keep_aspect/train/synthetic_train_annotations.json',
+    #
+    # 'valid_images': './dataset/Datasat_keep_aspect/val/images/',
+    # 'valid_info':   './dataset/Datasat_keep_aspect/val/val_annotations.json',
 
-    'train_images': './dataset/Dataset_squished/train/images/',
-    'train_info':   './dataset/Dataset_squished/train/synthetic_train_annotations.json',
+    #Finetuning with only Validation-Dataset split by into 80% train and 20% val
+    'train_images': './dataset/Dataset_Finetuning/images/',
+    'train_info':   './dataset/Dataset_Finetuning/train/train_annotations.json',
 
-    'valid_images': './dataset/Dataset_squished/val/images/',
-    'valid_info':   './dataset/Dataset_squished/val/val_annotations.json',
+    'valid_images': './dataset/Dataset_Finetuning/images/',
+    'valid_info':   './dataset/Dataset_Finetuning/val/val_annotations.json',
+
 
     'has_gt': True,
 
@@ -362,7 +370,7 @@ coco_base_config = Config({
     'use_focal_loss': False,
     'focal_loss_alpha': 0.25,
     'focal_loss_gamma': 2,
-    
+
     # The initial bias toward forground objects, as specified in the focal loss paper
     'focal_loss_init_pi': 0.01,
 
@@ -424,7 +432,7 @@ coco_base_config = Config({
 
     # Input image size.
     'max_size': 550,
-    
+
     # Whether or not to do post processing on the cpu at test time
     'force_cpu_nms': True,
 
@@ -454,7 +462,7 @@ coco_base_config = Config({
 
     # Whether or not to use the predicted coordinate scheme from Yolo v2
     'use_yolo_regressors': False,
-    
+
     # For training, bboxes are considered "positive" if their anchors have a 0.5 IoU overlap
     # or greater with a ground truth box. If this is true, instead of using the anchor boxes
     # for this IoU computation, the matching function will use the predicted bbox coordinates.
@@ -476,7 +484,7 @@ coco_base_config = Config({
     # Do not crop out the mask with bbox but slide a convnet on the image-size mask,
     # then use global pooling to get the final mask score
     'use_maskiou': False,
-    
+
     # Archecture for the mask iou network. A (num_classes-1, 1, {}) layer is appended to the end.
     'maskiou_net': [],
 
@@ -499,11 +507,11 @@ yolact_base_config = coco_base_config.copy({
 
     # Image Size
     'max_size': 550,
-    
+
     # Training params
     'lr_steps': (280000, 600000, 700000, 750000),
     'max_iter': 800000,
-    
+
     # Backbone Settings
     'backbone': resnet101_backbone.copy({
         'selected_layers': list(range(1, 4)),
@@ -547,7 +555,7 @@ yolact_resnet50_config = yolact_base_config.copy({
 
     'backbone': resnet50_backbone.copy({
         'selected_layers': list(range(1, 4)),
-        
+
         'pred_scales': yolact_base_config.backbone.pred_scales,
         'pred_aspect_ratios': yolact_base_config.backbone.pred_aspect_ratios,
         'use_pixel_scales': True,
