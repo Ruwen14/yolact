@@ -96,19 +96,19 @@ dataset_base = Config({
 
 custom_car_dataset = dataset_base.copy({
     'name': 'Aerial Car Detection - Synthetic',
-    #
-    # 'train_images': './dataset/Datasat_keep_aspect/train/images/',
-    # 'train_info':   './dataset/Datasat_keep_aspect/train/synthetic_train_annotations.json',
-    #
-    # 'valid_images': './dataset/Datasat_keep_aspect/val/images/',
-    # 'valid_info':   './dataset/Datasat_keep_aspect/val/val_annotations.json',
+
+    'train_images': './dataset/Dataset_squished/train/images/',
+    'train_info':   './dataset/Dataset_squished/train/synthetic_train_annotations.json',
+
+    'valid_images': './dataset/Dataset_squished/val/images/',
+    'valid_info':   './dataset/Dataset_squished/val/val_annotations.json',
 
     #Finetuning with only Validation-Dataset split by into 80% train and 20% val
-    'train_images': './dataset/Dataset_Finetuning/images/',
-    'train_info':   './dataset/Dataset_Finetuning/train/train_annotations.json',
-
-    'valid_images': './dataset/Dataset_Finetuning/images/',
-    'valid_info':   './dataset/Dataset_Finetuning/val/val_annotations.json',
+    # 'train_images': './dataset/Dataset_Finetuning/images/',
+    # 'train_info':   './dataset/Dataset_Finetuning/train/train_annotations.json',
+    #
+    # 'valid_images': './dataset/Dataset_Finetuning/images/',
+    # 'valid_info':   './dataset/Dataset_Finetuning/val/val_annotations.json',
 
 
     'has_gt': True,
@@ -568,6 +568,34 @@ yolact_resnet50_config = yolact_base_config.copy({
 yolact_resnet50_custom_car_config = yolact_resnet50_config.copy({
     'name': 'custom_resnet50',
     # Dataset stuff
+    'dataset': custom_car_dataset,
+    'num_classes': len(custom_car_dataset.class_names) + 1,
+
+    # 'max_iter': 18750,
+    'max_iter': 24360,
+
+    # 'lr_steps': (6500, 14000, 16000, 17500),
+
+    'lr_steps': (16443, 21315, 22533, 24000),
+
+    'augment_photometric_distort': True,
+    # Have a chance to scale down the image and pad (to emulate smaller detections)
+    'augment_expand': True,
+    # Potentialy sample a random crop from the image and put it in a random place
+    'augment_random_sample_crop': True,
+    # Mirror the image with a probability of 1/2
+    'augment_random_mirror': True,
+    # Flip the image vertically with a probability of 1/2
+    'augment_random_flip': True,
+    # With uniform probability, rotate the image [0,90,180,270] degrees
+    'augment_random_rot90': True,
+
+    'preserve_aspect_ratio': False,
+})
+
+yolact_resnet101_custom_car_config = yolact_base_config.copy({
+    'name' : 'custom_resnet101',
+
     'dataset': custom_car_dataset,
     'num_classes': len(custom_car_dataset.class_names) + 1,
 
