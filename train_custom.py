@@ -233,7 +233,7 @@ def train():
         if args.start_iter == -1:
             args.start_iter = SavePath.from_str(args.resume).iteration
     else:
-        print('Initializing weights...')
+        print(f'Initializing weights from {args.save_folder + cfg.backbone.path}')
         yolact_net.init_weights(backbone_path=args.save_folder + cfg.backbone.path)
 
     optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=args.momentum,
@@ -307,9 +307,9 @@ def train():
     # try-except so you can use ctrl+c to save early and stop training
     try:
         for epoch in range(num_epochs):
-            print('%--------------------------------------------------------------------------------------------------------------------------------%')
-            print(f'     EPOCH [{epoch}|{num_epochs}]     LR [{cur_lr}]     Best Mask mAP [{best_mask_mAP}]'   )
-            print('%--------------------------------------------------------------------------------------------------------------------------------%')
+            print('%----------------------------------------------------------------------------------------------%')
+            print(f'     EPOCH [{epoch}|{num_epochs}]     LR [{cur_lr}]     Best Mask mAP [{best_mask_mAP} %]'   )
+            print('%----------------------------------------------------------------------------------------------%')
             # Resume from start_iter
             if (epoch + 1) * epoch_size < iteration:
                 continue
@@ -432,6 +432,8 @@ def train():
                                                           log=log if args.log else None)
                     if cur_mask_mAP > best_mask_mAP:
                         best_mask_mAP = cur_mask_mAP
+                        wandb.config.update({'best_mask_mAP':best_mask_mAP },allow_val_change=True)
+
                         print(f'Found new best Mask mAP with {best_mask_mAP} %, Saving weights ...\n')
 
                         SavePath.remove_prev_best(args.save_folder)
@@ -636,3 +638,4 @@ if __name__ == '__main__':
 
 # python train.py --config=yolact_resnet50_custom_car_config  --save_interval=1000 --validation_size=3000
 #python train_custom.py --config=yolact_resnet50_custom_car_config  --save_interval=1000 --validation_size=1328 --num_workers=4
+#python train_custom.py --config=yolact_resnet101_custom_car_config  --save_interval=1000 --validation_size=1328 --num_workers=4
