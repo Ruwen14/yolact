@@ -1,0 +1,38 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+							TESLA P100
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+python eval.py --config=yolact_resnet50_custom_car_config --trained_model=weights/fine_tune_custom_resnet50_160_21400_mAP85.57.pth --benchmark --max_images=400 
+
+
+Processing Images  ██████████████████████████████    400 /    400 (100.00%)    31.22 fps        
+Stats for the last frame:
+      Name      | Time (ms)  
+----------------+------------
+  Network Extra |     0.2847 
+       backbone |    12.4320 
+            fpn |     1.2014 
+          proto |     1.0339 
+     pred_heads |     4.3129 
+     makepriors |     0.0185 
+         Detect |     8.4652 
+    Postprocess |     1.3797 
+           Copy |     1.9151 
+           Sync |     0.0479 
+----------------+------------
+          Total |    31.0912 
+Average: 31.22 fps, 32.03 ms
+
+---------------------------------------------------------------------------------------------------------------------
+python eval.py --config=yolact_resnet50_custom_car_config --trained_model=weights/fine_tune_custom_resnet50_160_21400_mAP85.57.pth --score_threshold=0.15 --top_k=15 --video_multiframe=1 --video=./video/video.MP4:video5.mp4 --display_fps --log_fps=true
+
+Processing Frames  ██████████████████████████████    573 /    573 (100.00%)    28.73 fps        fps-log-name:P100
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+python eval.py --config=yolact_resnet50_custom_car_config --trained_model=weights/fine_tune_custom_resnet50_160_21400_mAP85.57.pth --score_threshold=0.15 --top_k=15 --video_multiframe=1 --video=./video/video.MP4:video5.mp4 --display_fps --log_fps=true --emulate_playback
+
+
+Processing Frames  ██████████████████████████████    573 /    573 (100.00%)    24.12 fps        fps-log-name:P100_emulate_playback
+---------------------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

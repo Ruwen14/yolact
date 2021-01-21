@@ -1,0 +1,40 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+							QUADRO T2000
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+python eval.py --config=yolact_resnet50_custom_car_config --trained_model=weights/fine_tune_custom_resnet50_160_21400_mAP85.57.pth --benchmark --max_images=400 
+
+Processing Images  ██████████████████████████████    400 /    400 (100.00%)    14.42 fps
+
+Stats for the last frame:
+
+      Name      | Time (ms)
+----------------+------------
+  Network Extra |     0.4493
+       backbone |     5.2527
+            fpn |     0.5131
+          proto |     0.4705
+     pred_heads |     1.8789
+     makepriors |     0.0112
+         Detect |    55.2167
+    Postprocess |     0.7541
+           Copy |     3.6872
+           Sync |     0.0269
+----------------+------------
+          Total |    68.2606
+
+Average: 14.42 fps, 69.33 ms
+
+---------------------------------------------------------------------------------------------------------------------
+python eval.py --config=yolact_resnet50_custom_car_config --trained_model=weights/fine_tune_custom_resnet50_160_21400_mAP85.57.pth --score_threshold=0.15 --top_k=15 --video_multiframe=1 --video=./video/video.MP4:video5.mp4 --display_fps --log_fps=true
+
+Processing Frames  ██████████████████████████████    573 /    573 (100.00%)    14.13 fps        fps-log-name:T2000
+
+
+---------------------------------------------------------------------------------------------------------------------
+python eval.py --config=yolact_resnet50_custom_car_config --trained_model=weights/fine_tune_custom_resnet50_160_21400_mAP85.57.pth --score_threshold=0.15 --top_k=15 --video_multiframe=1 --video=./video/video.MP4:video5.mp4 --display_fps --log_fps=true --emulate_playback
+
+
+Processing Frames  ██████████████████████████████    573 /    573 (100.00%)    14.0 fps        fps-log-name:T2000_emulate_playback
+
+---------------------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

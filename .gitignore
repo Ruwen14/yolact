@@ -5,8 +5,13 @@ video/
 *$py.class
 # C extensions
 *.so
+output_videos/
+output/
+Dataset/
+Benchmark_command.txt
 # Distribution / packaging
 .Python
+*.mp4
 env/
 wandb/
 *.pth

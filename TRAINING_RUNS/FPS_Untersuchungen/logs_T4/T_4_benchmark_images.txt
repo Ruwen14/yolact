@@ -1,0 +1,35 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+							TESLA T4
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+python eval.py --config=yolact_resnet50_custom_car_config --trained_model=weights/fine_tune_custom_resnet50_160_21400_mAP85.57.pth --benchmark --max_images=400 --log_fps=true
+
+Processing Images  ██████████████████████████████    400 /    400 (100.00%)    27.98 fps        
+Stats for the last frame:
+      Name      | Time (ms)  
+----------------+------------
+  Network Extra |     0.2375 
+       backbone |    11.9439 
+            fpn |     1.4630 
+          proto |     0.8023 
+     pred_heads |     3.0693 
+     makepriors |     0.0180 
+         Detect |    13.2487 
+    Postprocess |     1.1575 
+           Copy |     2.8367 
+           Sync |     0.0427 
+----------------+------------
+          Total |    34.8197 
+Average: 27.98 fps, 35.74 ms
+
+---------------------------------------------------------------------------------------------------------------------
+python eval.py --config=yolact_resnet50_custom_car_config --trained_model=weights/fine_tune_custom_resnet50_160_21400_mAP85.57.pth --score_threshold=0.15 --top_k=15 --video_multiframe=1 --video=./video/video.MP4:video5.mp4 --display_fps --log_fps=true
+
+Processing Frames  ██████████████████████████████    573 /    573 (100.00%)    23.05 fps        fps-log-name:T4  
+
+
+---------------------------------------------------------------------------------------------------------------------
+python eval.py --config=yolact_resnet50_custom_car_config --trained_model=weights/fine_tune_custom_resnet50_160_21400_mAP85.57.pth --score_threshold=0.15 --top_k=15 --video_multiframe=1 --video=./video/video.MP4:video5.mp4 --display_fps --log_fps=true --emulate_playback
+Processing Frames  ██████████████████████████████    573 /    573 (100.00%)    24.16 fps        fps-log-name:T4_emulate_playback
+
+---------------------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
